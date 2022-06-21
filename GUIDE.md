@@ -265,7 +265,7 @@ flutter doctor
 
 ![pkg-config tool missing](https://i.imgur.com/ahaGJY0.png)
 
-After installing pkg-config and run `flutter doctor` again
+After installing pkg-config and run `flutter doctor` again, we will see that it is complaining clang cmake ninja-build libgtk-3-dev are required.
 
 ![clang cmake ninja-build libgtk-3-dev tools missing](https://i.imgur.com/iDH2Xpo.png)
 
