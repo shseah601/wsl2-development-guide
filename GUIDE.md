@@ -283,6 +283,52 @@ flutter doctor
 
 ![Linux toolchain no issue](https://i.imgur.com/VOpwAwh.png)
 
+Voila! You can continue to build your flutter from now on.
+
+## Android Studio AVD **/dev/kvm device: permission denied** Warning
+
+After launching android studio in WSL2, walks through the Android Studio setup if first time launching. Accepts all the tools license. Installs the tools.
+
+```
+sh $HOME/Applications/android-studio/bin/studio.sh
+```
+
+After setup, we might see a warning message showing **/dev/kvm device: permission denied**.
+
+![AVD configuration showing /dev/kvm device: permission denied](https://i.imgur.com/NaxRdgs.png)
+
+So we will need to checks our `/dev/kvm` user permission.
+
+```
+ls -la /dev/kvm
+```
+
+![/dev/kvm permissions, root group without group read write permission](https://i.imgur.com/zXKVRWw.png)
+
+From the permission we able to know that, `/dev/kvm` is currently accessible by root user only, we will have different options for us to access it.
+
+### Option 1
+
+Add current user to **kvm** group, change `/dev/kvm` group to **kvm** and grant read and write access for **kvm** group.
+
+```
+sudo usermod -a -G kvm $USER;
+sudo chgrp kvm /dev/kvm;
+sudo chmod g+rw /dev/kvm;
+```
+
+After alter the permissions and we checks the permission for `/dev/kvm`.
+
+```
+ls -la /dev/kvm
+```
+
+![new /dev/kvm permissions, kvm group with read write permission](https://i.imgur.com/Hk3BTDb.png)
+
+Relaunch Android Studio and tries to create a new AVD we will see the warning message is gone.
+
+![AVD configuration without /dev/kvm device: permission denied warning](https://i.imgur.com/xqbWqGh.png)
+
 ## References
 1. [Installing Flutter 2.0 on WSL2][2] by Josh Kautz
 2. [Installing Android Studio on WSL2 for Flutter][3] by addshore
