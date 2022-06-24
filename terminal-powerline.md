@@ -71,6 +71,12 @@ ls $(brew --prefix oh-my-posh)/themes
 
 #### Bash Shell Theme
 
+To setup default terminal to bash for user, execute `chsh`
+
+```
+chsh -s $(which bash)
+```
+
 Execute the command below to add `oh-my-posh` init everytime `bash` started. Rememeber to replace *bubblesextra* to the theme we want.
 
 ```
@@ -83,6 +89,12 @@ oh-my-posh init script should looks like screenshot below in `.bashrc`.
 ![oh-my-posh init script added in .bashrc](https://i.imgur.com/0GJS8sW.png)
 
 #### Fish Shell Theme
+
+To setup default to Fish for current user, execute `chsh`
+
+```
+chsh -s $(which fish)
+```
 
 If you using Fish shell, you will need to edit `~/.config/fish/config.fish`. Rememeber to replace *night-owl* to the theme we want.
 
@@ -103,6 +115,14 @@ I recommend to edit `~/.profile`. Move the line `eval "$(/home/linuxbrew/.linuxb
 Switching different shell showing different Oh My Posh themes
 
 ![Different shell showing different Oh My Posh theme](https://i.imgur.com/z1XH9Nt.png)
+
+#### Not able to switch shell
+
+There is a chance that you encounter `You may not change the shell for 'xxx'.` when trying to switch default shell. You just do sudo chsh for that user.
+
+```
+sudo chsh -s "$(which bash)" username
+```
 
 ## Nerd Fonts
 
