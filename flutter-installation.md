@@ -24,7 +24,7 @@ Create an `Applications` directory if it doesn’t already exist, and navigate t
 mkdir -p $HOME/Applications && cd "$_"
 ```
 
-Extract downloaded Flutter file from `Downloads` directory to `Applications` directory where you currently navigated.
+Extract downloaded Flutter file from `Downloads` directory to `Applications` directory where we currently navigated.
 
 ```
 tar xfv $HOME/Downloads/$(ls -d $HOME/Downloads/flutter*.tar.xz | xargs basename)
@@ -42,7 +42,7 @@ Execute `source` to update PATH variable to current working session
 source $HOME/.bashrc
 ```
 
-Verify Flutter installed, you might get a welcome message from Flutter when you execute the `flutter` command for the first time.
+Verify Flutter installed, we might get a welcome message from Flutter when we execute the `flutter` command for the first time.
 
 ```
 flutter --version
@@ -64,7 +64,7 @@ Install the [unzip][6] utility and the [default-jdk][7] development utility
 sudo apt install unzip default-jdk -y
 ```
 
-Navigate to `Downloads` directory where you created before.
+Navigate to `Downloads` directory where we created before.
 
 ```
 cd $HOME/Downloads
@@ -90,7 +90,7 @@ Navigate to `Applications` directory
 cd $HOME/Applications
 ```
 
-Extract downloaded Android SDK Command Line Tools file from `Downloads` directory to `Applications` directory where you currently navigated. This command will put the files into `android` directory inside `Applications` directory.
+Extract downloaded Android SDK Command Line Tools file from `Downloads` directory to `Applications` directory where we currently navigated. This command will put the files into `android` directory inside `Applications` directory.
 
 ```
 unzip $HOME/Downloads/$(ls -d $HOME/Downloads/commandlinetools-linux*.zip | xargs basename) -d ./android
@@ -126,7 +126,7 @@ Execute `source` to update PATH variable to current working session
 source $HOME/.bashrc
 ```
 
-You may use `sdkmanager --list` to find the latest version of each sdk tools. _(The latest tools are for android 33 as of writing)_
+We may use `sdkmanager --list` to find the latest version of each sdk tools. _(The latest tools are for android 33 as of writing)_
 
 ```
 sdkmanager --list | grep 'android-3\|build-tools;3'
@@ -176,7 +176,7 @@ Running flutter doctor to check the remaining dependencies for flutter
 flutter doctor
 ```
 
-If you doing fresh install, you will need to configure Android Studio based on `flutter` command. Next step is to install Android Studio.
+If we are doing fresh install, we will need to configure Android Studio based on `flutter` command. Next step is to install Android Studio.
 
 ## Android Studio Installation
 
@@ -207,7 +207,7 @@ Navigate to `Applications` directory
 cd $HOME/Applications
 ```
 
-Extract Android Studio files from `Downloads` directory to `Applications` directory where you currently navigated
+Extract Android Studio files from `Downloads` directory to `Applications` directory where we currently navigated
 
 ```
 tar xfv $(ls -1t $HOME/Downloads/android-studio-* | head -n1)
@@ -225,7 +225,7 @@ Running flutter doctor to check the remaining dependencies for flutter
 flutter doctor
 ```
 
-If you want to develop Flutter for web, you will need to configure Chrome based on `flutter` command. Next step is to configure Chrome for flutter.
+If we want to develop Flutter for web, we will need to configure Chrome based on `flutter` command. Next step is to configure Chrome for flutter.
 
 ## Chrome Configuration (Flutter for web)
 
@@ -233,7 +233,7 @@ Flutter Chrome configuration are able to use any chromium based browser. Setting
 
 ### Chrome
 
-If you use Google Chrome for developement.
+If we use Google Chrome for developement.
 
 ```
 echo -e "\n# Windows Chrome\nexport CHROME_EXECUTABLE='/mnt/c/Program Files/Google/Chrome/Application/chrome.exe'" >> $HOME/.bashrc
@@ -241,7 +241,7 @@ echo -e "\n# Windows Chrome\nexport CHROME_EXECUTABLE='/mnt/c/Program Files/Goog
 
 ### Brave
 
-If you use Brave for developement.
+If we use Brave for developement.
 
 ```
 echo -e "\n# Windows Brave\nexport CHROME_EXECUTABLE='/mnt/c/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe'" >> $HOME/.bashrc
@@ -253,11 +253,11 @@ Running flutter doctor to check the remaining dependencies for flutter
 flutter doctor
 ```
 
-If you want to develop Flutter for Linux Desktop, you will need to configure Linux toolchain based on `flutter` command. Next step is to configure Linux toolchain for flutter.
+If we want to develop Flutter for Linux Desktop, we will need to configure Linux toolchain based on `flutter` command. Next step is to configure Linux toolchain for flutter.
 
 ## Linux Desktop
 
-When you run flutter doctor you will find that `ProcessException: Failed to find "pkg-config" in the search path`, which means that `pkg-config` tool is required. After that there will be 4 more tools required which are `clang` `cmake` `ninja-build` `libgtk-3-dev`.
+When we run flutter doctor we will find that `ProcessException: Failed to find "pkg-config" in the search path`, which means that `pkg-config` tool is required. After that there will be 4 more tools required which are `clang` `cmake` `ninja-build` `libgtk-3-dev`.
 
 ```
 flutter doctor
@@ -283,7 +283,7 @@ flutter doctor
 
 ![Linux toolchain no issue](https://i.imgur.com/VOpwAwh.png)
 
-Voila! You can continue to build your flutter from now on.
+Voila! We can continue to build flutter application from now on.
 
 ## Android Studio AVD **/dev/kvm device: permission denied** Warning
 
@@ -307,8 +307,6 @@ ls -la /dev/kvm
 
 From the permission we able to know that, `/dev/kvm` is currently accessible by root user only, we will have different options for us to access it.
 
-### Option 1
-
 Add current user to **kvm** group, change `/dev/kvm` group to **kvm** and grant read and write access for **kvm** group.
 
 ```
@@ -329,6 +327,68 @@ Relaunch Android Studio and tries to create a new AVD we will see the warning me
 
 ![AVD configuration without /dev/kvm device: permission denied warning](https://i.imgur.com/xqbWqGh.png)
 
+### `/dev/kvm` Permission Gone When WSL Reboot
+
+We will find what when rebooting WSL we may not start AVD due to `/dev/kvm` permission reset back to root access. We will need to use `crontab` to let system execute `chgrp` and `chmod` for us whenever WSL reboot. Since the commands are requried `sudo` we will edit cron job in sudo.
+
+```
+sudo crontab -e
+```
+
+When we are the first time using `crontab` we will be prompted to choose a editor. Press 1 which is `nano` as it is quite easy to use for terminal and press enter to proceed.
+
+![crontab prompt to choose editor](https://i.imgur.com/mwy5Ies.png)
+
+Add lines below
+```
+# Execute on booted
+@reboot /bin/chgrp kvm /dev/kvm
+@reboot /bin/chmod g+rw /dev/kvm
+```
+
+![Add on boot commands, chmod and chgrp of /dev/kvm into crontab](https://i.imgur.com/uVIRdq2.png)
+
+Then press `Ctrl + O` and press enter to save changes. Press `Ctrl - X` to exit `nano` editor.
+
+We have our cron job ready but it will not execute anything, so we need to start the `cron` daemon.
+
+```
+sudo service cron start
+```
+
+![Start cron server](https://i.imgur.com/JabUvss.png)
+
+In WSL, the `cron` daemon will not start automatically, so we need to modify our WSL configuration to let it start `cron` daemon when it is booted. According to [Advanced settings configuration in WSL][11], we need to create a wsl.config inside our WSL.
+
+```
+sudo nano /etc/wsl.config
+```
+
+Then add the following lines into the file. This will tells WSL to start `cron` when it is booted. **All commands are executed as root**. We are able to execute multiple commands by adding semicolon (;) for each of the commands.
+
+```
+# Set a command to run when a new WSL instance launches. This example starts the Docker container service.
+[boot]
+command="service cron start"
+#command="command 1; command 2"
+```
+
+Then press `Ctrl + O` and press enter to save changes. Press `Ctrl - X` to exit `nano` editor.
+
+When we restart our WSL we will find that `/dev/kvm` will be the permission we set as before.
+
+![/dev/kvm is correct permission on WSL booted](https://i.imgur.com/0Jar6Nb.png)
+
+If `/dev/kvm` does not have the same permission as shown, you need to check if `cron` daemon service is runnning.
+
+```
+service cron status
+```
+
+![Cron daemon is running](https://i.imgur.com/zPKNiDP.png)
+
+If `cron` is not running, please review the steps above and try again.
+
 ## References
 1. [Installing Flutter 2.0 on WSL2][2] by Josh Kautz
 2. [Installing Android Studio on WSL2 for Flutter][3] by addshore
@@ -345,3 +405,4 @@ Relaunch Android Studio and tries to create a new AVD we will see the warning me
 [8]: https://developer.android.com/studio#command-tools
 [9]: https://developer.android.com/studio#downloads
 [10]: https://stackoverflow.com/questions/67169985/exception-unable-to-generate-build-files-in-flutter
+[11]: https://docs.microsoft.com/en-us/windows/wsl/wsl-config#example-wslconf-file
