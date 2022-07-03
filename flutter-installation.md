@@ -56,7 +56,68 @@ Check for Flutter setup dependencies
 flutter doctor
 ```
 
+If we are doing fresh install, we will need to configure Android Studio based on `flutter` command. Next step is to install Android Studio.
+
+## Android Studio Installation
+
+If Android Studio is installed please skip until flutter configuration of Android Studio to continue.
+
+Navigate to `Downloads` directory.
+
+```
+cd $HOME/Downloads
+```
+
+Download [Android Studio for Linux][9]. Click Download options button or scroll down to find Android Studio downloads list for different platforms.
+Select the download link for Linux.
+
+![List of Android Studio download link for different platforms](https://i.imgur.com/wo433BY.png)
+
+Right click on the Download Button and click copy link address
+
+![Copy download link for Android Studio Linux](https://i.imgur.com/WEEKipq.png)
+
+```
+wget https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2021.2.1.15/android-studio-2021.2.1.15-linux.tar.gz
+```
+
+Navigate to `Applications` directory
+
+```
+cd $HOME/Applications
+```
+
+Extract Android Studio files from `Downloads` directory to `Applications` directory where we currently navigated
+
+```
+tar xfv $(ls -1t $HOME/Downloads/android-studio-* | head -n1)
+```
+
+We can create a shortcut symbolic links to Android Studio startup script so that we able to start Android Studio at anywhere. The second parameter `android-studio` can be any text that we will use to start Android Studio every time we type in the terminal.
+
+```
+sudo ln -s $HOME/Applications/android-studio/bin/studio.sh /usr/local/bin/android-studio
+```
+
+Configure Flutter to use Android Studio
+
+```
+flutter config --android-studio-dir $HOME/Applications/android-studio/
+```
+
+Running flutter doctor to check the remaining dependencies for flutter
+
+```
+flutter doctor
+```
+
+If we want to develop Flutter for web, we will need to configure Chrome based on `flutter` command. Next step is to configure Chrome for flutter.
+
 ## Android SDK Installation
+
+There are 2 ways to use `sdkmanager`, one is install sdkmanager manually and use it, or we can use it in Android Studio installed.
+
+### sdkmanager install manually
 
 Install the [unzip][6] utility and the [default-jdk][7] development utility
 
@@ -159,10 +220,56 @@ Execute `source` to update PATH variable to current working session
 source $HOME/.bashrc
 ```
 
+Accept Android SDK licenses
+```
+sdkmanager --licenses
+```
+
 Configure Flutter to use Android SDK
 
 ```
-flutter config --android-sdk $HOME/Applications/android/
+flutter config --android-sdk $HOME/Android/Sdk/
+```
+
+Running flutter doctor to check the remaining dependencies for flutter
+
+```
+flutter doctor
+```
+
+### Using Android Studio sdkmanager
+
+We can use Android Studio sdkmanager instead.
+
+![Launch sdkmanager from Android Studio](https://i.imgur.com/vkeC5eO.png)
+
+The default Android SDK Location shown should be /home/xxx/Android/Sdk.
+
+![Android SDK Location](https://i.imgur.com/faCXI7i.png)
+
+We are able to check `Show Package Details` in order to view and install different Android version and tools.
+
+![Show Package Details](https://i.imgur.com/J94Ui5G.png)
+
+We can tick and install the Android version we want for our virtual device in SDK Platforms, and make sure to install Android SDK Build-Tools, Android SDK Command-line Tools, Android Emulator and Android SDK Platform-Tools if not yet installed, then click Apply and click agree for the licenses to start installation.
+
+Add cmdline-tools path to Bash shell PATH variable in `$HOME/.bashrc`.
+
+```
+echo -e "\n# Android\nexport PATH=\$HOME/Android/Sdk/cmdline-tools/latest/bin:\$PATH" >> $HOME/.bashrc;
+```
+
+Add installed platform-tools and emulator path to Bash shell PATH variable in `$HOME/.bashrc`
+
+```
+echo -e "export PATH=\$HOME/Android/Sdk/emulator:\$PATH" >> $HOME/.bashrc;
+echo -e "export PATH=\$HOME/Android/Sdk/platform-tools:\$PATH" >> $HOME/.bashrc;
+```
+
+Execute `source` to update PATH variable to current working session
+
+```
+source $HOME/.bashrc
 ```
 
 Accept Android SDK licenses
@@ -170,59 +277,10 @@ Accept Android SDK licenses
 sdkmanager --licenses
 ```
 
-Running flutter doctor to check the remaining dependencies for flutter
+Configure Flutter to use Android SDK
 
 ```
-flutter doctor
-```
-
-If we are doing fresh install, we will need to configure Android Studio based on `flutter` command. Next step is to install Android Studio.
-
-## Android Studio Installation
-
-If Android Studio is installed please skip until flutter configuration of Android Studio to continue.
-
-Navigate to `Downloads` directory.
-
-```
-cd $HOME/Downloads
-```
-
-Download [Android Studio for Linux][9]. Click Download options button or scroll down to find Android Studio downloads list for different platforms.
-Select the download link for Linux.
-
-![List of Android Studio download link for different platforms](https://i.imgur.com/wo433BY.png)
-
-Right click on the Download Button and click copy link address
-
-![Copy download link for Android Studio Linux](https://i.imgur.com/WEEKipq.png)
-
-```
-wget https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2021.2.1.15/android-studio-2021.2.1.15-linux.tar.gz
-```
-
-Navigate to `Applications` directory
-
-```
-cd $HOME/Applications
-```
-
-Extract Android Studio files from `Downloads` directory to `Applications` directory where we currently navigated
-
-```
-tar xfv $(ls -1t $HOME/Downloads/android-studio-* | head -n1)
-```
-
-We can create a shortcut symbolic links to Android Studio startup script so that we able to start Android Studio at anywhere. The second parameter `android-studio` can be any text that we will use to start Android Studio every time we type in the terminal.
-
-```
-sudo ln -s $HOME/Applications/android-studio/bin/studio.sh /usr/local/bin/android-studio
-```
-
-Configure Flutter to use Android Studio
-
-```
-flutter config --android-studio-dir $HOME/Applications/android-studio/
+flutter config --android-sdk $HOME/Android/Sdk/
 ```
 
 Running flutter doctor to check the remaining dependencies for flutter
@@ -230,8 +288,6 @@ Running flutter doctor to check the remaining dependencies for flutter
 ```
 flutter doctor
 ```
-
-If we want to develop Flutter for web, we will need to configure Chrome based on `flutter` command. Next step is to configure Chrome for flutter.
 
 ## Chrome Configuration (Flutter for web)
 
