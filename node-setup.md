@@ -20,7 +20,7 @@ Due to permission issue, we not able to use `n` to install node under `/usr/loca
     mkdir $HOME/.n
     ```
 
-2. Then define `N_PREFIX` in shell.
+2. Then define `N_PREFIX` in choice of shell.
 
     ### bash ($HOME/.bashrc)
 
@@ -36,8 +36,10 @@ Due to permission issue, we not able to use `n` to install node under `/usr/loca
 
     ### fish
 
+    use `nano`, or other choice of editor to edit and add below code into `~/.config/fish/config.fish`.
+
     ```
-    set -x N_PREFIX $HOME/.n
+    set N_PREFIX $HOME/.n
     ```
 
 3. Add new binary to `$PATH`.
@@ -56,7 +58,9 @@ Due to permission issue, we not able to use `n` to install node under `/usr/loca
 
     ### fish
 
+    use `nano`, or other choice of editor to edit and add below code into `~/.config/fish/config.fish`.
+
     ```
-    set -x PATH $N_PREFIX/bin:$PATH
+    set PATH $PATH $N_PREFIX/bin
     ```
 
