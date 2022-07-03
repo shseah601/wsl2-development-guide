@@ -213,6 +213,12 @@ Extract Android Studio files from `Downloads` directory to `Applications` direct
 tar xfv $(ls -1t $HOME/Downloads/android-studio-* | head -n1)
 ```
 
+We can create a shortcut symbolic links to Android Studio startup script so that we able to start Android Studio at anywhere. The second parameter `android-studio` can be any text that we will use to start Android Studio every time we type in the terminal.
+
+```
+sudo ln -s $HOME/Applications/android-studio/bin/studio.sh /usr/local/bin/android-studio
+```
+
 Configure Flutter to use Android Studio
 
 ```
@@ -290,7 +296,7 @@ Voila! We can continue to build flutter application from now on.
 After launching android studio in WSL2, walks through the Android Studio setup if first time launching. Accepts all the tools license. Installs the tools.
 
 ```
-sh $HOME/Applications/android-studio/bin/studio.sh
+android-studio
 ```
 
 After setup, we might see a warning message showing **/dev/kvm device: permission denied**.
