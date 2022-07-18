@@ -451,6 +451,20 @@ service cron status
 
 If `cron` is not running, please review the steps above and try again.
 
+## Flutter always spawning chrome windows
+
+When opening flutter project or running flutter doctor, chrome window is spawned. If not developing for web using flutter, we can disable flutter web connection to chrome via command below.
+
+```
+flutter config --no-enable-web
+```
+
+And command below is to enable back
+
+```
+flutter config --enable-web
+```
+
 ## References
 1. [Installing Flutter 2.0 on WSL2][2] by Josh Kautz
 2. [Installing Android Studio on WSL2 for Flutter][3] by addshore
